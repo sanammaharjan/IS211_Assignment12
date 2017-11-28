@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'>
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,200,300,700'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tab.css')}}"/>
+</head>
+<body>
+<div class="container">
+    <section id="fancyTabWidget" class="tabs t-tabs">
+        <ul class="nav nav-tabs fancyTabs" role="tablist">
+            <li class="tab fancyTab active">
+                <div class="arrow-down">
+                    <div class="arrow-down-inner"></div>
+                </div>
+                <a id="tab0" href="#tabBody0" role="tab" aria-controls="tabBody3" aria-selected="true" data-toggle="tab"
+                   tabindex="0"><span class="fa fa-desktop"></span><span class="hidden-xs">Report</span></a>
+                <div class="whiteBlock"></div>
+            </li>
+        </ul>
+        <div id="myTabContent" class="tab-content fancyTabContent" aria-live="polite">
+            <div class="tab-pane  fade active in" id="tabBody0" role="tabpanel" aria-labelledby="tab0"
+                 aria-hidden="false" tabindex="0">
+                <div>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <h2>Report for {{ student_name }}</h2>
+                            {% if has_report %}
+                            <table width="100%">
+                                <tr>
+                                    <th>Quiz ID</th>
+                                    <th>Subject</th>
+                                    <th>Date of Quiz</th>
+                                    <th>Score</th>
+                                    <th>Delete</th>
+                                </tr>
+                                {% for score in grades %}
+                                <tr>
+                                    <td>{{ score.Quiz_ID }}</td>
+                                    <td>{{ score.Quiz_Subject }}</td>
+                                    <td>{{ score.Quiz_Date }}</td>
+                                    <td>{{ score.Quiz_Score }}</td>
+                                    <td>
+                                        <form action="/results/delete" method="post">
+                                            <input type="hidden" name="student_id" value="{{ id }}">
+                                            <input type="hidden" name="quiz_id" value="{{ score.quiz_id }}">
+                                            <input type="hidden" name="score" value="{{ score.score }}">
+                                            <input type="submit" value="Delete">
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            {% else %}
+                            <span>User has not taken any quizes yet.</span>
+                            {% endif %}
+                            <p class="message"><a href="/dashboard">Return to Dashboard</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src="{{ url_for('static', filename='js/index_tab.js')}}"></script>
+</body>
+</html>
